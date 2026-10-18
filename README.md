@@ -133,4 +133,4 @@ Although TypeType contains foundational codebase hooks for Niconico, its upstrea
 
 ## 📄 License
 
-MIT License © 2026 TypeType Team
+MIT License © 2026 Situla
