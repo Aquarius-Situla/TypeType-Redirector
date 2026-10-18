@@ -6,9 +6,8 @@ hostname = www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.
 # 1. Bilibili 网页版与移动端 (精准捕获 12 位 BV 号)
 ^https?://.*bilibili\.com/video/(BV[0-9a-zA-Z]{10}).*$ url 302 https://www.example.com/watch?v=$1
 
-# 2. Bilibili b23.tv 短链 (区分 BV 短链与普通短链)
+# 2. Bilibili b23.tv 短链 (仅直接匹配 BV 号短链；随机短码放行由 B站官方完成 302 解析后触发规则 1)
 ^https?://b23\.tv/(BV[0-9a-zA-Z]{10}).*$ url 302 https://www.example.com/watch?v=$1
-^https?://b23\.tv/([a-zA-Z0-9]+).*$ url 302 https://www.example.com/watch?v=https://b23.tv/$1
 
 # 3. YouTube 视频 (v 为第一个参数)
 ^https?://.*youtube\.com/watch\?v=([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
