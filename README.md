@@ -1,6 +1,8 @@
 # TypeType-Redirect
 
-A set of proxy rewrite and redirection rules designed to automatically redirect **Bilibili** (including `b23.tv` short links) and **YouTube** (including `youtu.be` short links and Shorts) video links to your self-hosted or custom **TypeType** service via HTTP 302/307 redirects.
+A set of proxy rewrite and redirection rules designed to automatically redirect **Bilibili** (including `b23.tv` short links) and **YouTube** (including `youtu.be` short links, Shorts, and homepages) video links to your self-hosted or custom **TypeType** service via HTTP 302/307 redirects.
+
+Helps prevent algorithmic feed distractions and habit-driven endless scrolling by landing directly into your clean TypeType environment.
 
 Compatible with **Shadowrocket** and **Quantumult X**.
 
@@ -8,13 +10,16 @@ Compatible with **Shadowrocket** and **Quantumult X**.
 
 ## 🎯 Redirection Routing Mapping
 
-| Source URL | Redirected TypeType Destination |
-| :--- | :--- |
-| `https://www.bilibili.com/video/BV1xx411c7xx` | `https://[YOUR_DOMAIN]/watch?v=BV1xx411c7xx` |
-| `https://b23.tv/xxxxxx` | `https://[YOUR_DOMAIN]/watch?v=https://b23.tv/xxxxxx` |
-| `https://www.youtube.com/watch?v=dQw4w9WgXcQ` | `https://[YOUR_DOMAIN]/watch?v=dQw4w9WgXcQ` |
-| `https://www.youtube.com/shorts/xxxxxx` | `https://[YOUR_DOMAIN]/watch?v=xxxxxx` |
-| `https://youtu.be/dQw4w9WgXcQ` | `https://[YOUR_DOMAIN]/watch?v=dQw4w9WgXcQ` |
+| Source URL | Redirected TypeType Destination | Purpose |
+| :--- | :--- | :--- |
+| `https://www.bilibili.com/` / `https://m.bilibili.com/` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
+| `https://www.youtube.com/` / `https://m.youtube.com/` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
+| `https://b23.tv` / `https://youtu.be` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
+| `https://www.bilibili.com/video/BV1xx411c7xx` | `https://[YOUR_DOMAIN]/watch?v=BV1xx411c7xx` | Video Player |
+| `https://b23.tv/xxxxxx` | `https://[YOUR_DOMAIN]/watch?v=https://b23.tv/xxxxxx` | Short link redirection |
+| `https://www.youtube.com/watch?v=dQw4w9WgXcQ` | `https://[YOUR_DOMAIN]/watch?v=dQw4w9WgXcQ` | Video Player |
+| `https://www.youtube.com/shorts/xxxxxx` | `https://[YOUR_DOMAIN]/watch?v=xxxxxx` | Video Player |
+| `https://youtu.be/dQw4w9WgXcQ` | `https://[YOUR_DOMAIN]/watch?v=dQw4w9WgXcQ` | Video Player |
 
 ---
 
@@ -73,6 +78,10 @@ Once deployed, your worker will provide a unique address (e.g. `https://typetype
 1. **HTTPS Decryption (MITM) & CA Certificate Trust**:
    - **Shadowrocket**: Config -> tap ⓘ on current config -> **HTTPS Decryption** -> Turn on, generate & install CA certificate -> Go to iOS **Settings** -> **General** -> **About** -> **Certificate Trust Settings** -> Enable full trust for the certificate.
    - **Quantumult X**: Settings -> **MitM** -> Generate & install certificate -> Fully trust the root certificate in iOS Settings.
-2. **Scope of Application**:
+2. **Preventing QUIC Bypass (HTTP/3)**:
+   - Modern browsers like Safari prioritize QUIC (UDP 443) for Google/YouTube services, which cannot be decrypted by proxy MITM engines.
+   - It is strongly recommended to add a rule in Shadowrocket/QuanX to reject UDP port 443 traffic:
+     `AND,((DEST-PORT,443),(PROTOCOL,UDP)),REJECT`
+3. **Scope of Application**:
    - Redirection operates reliably in **browsers (Safari, Chrome, etc.) and in-app web views**.
    - The official YouTube app implements strict **SSL Pinning**. Intercepting traffic from the official app will result in connection failure; this module is intended for web browsing and opening external video links.
