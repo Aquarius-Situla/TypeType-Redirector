@@ -1,0 +1,19 @@
+# TypeType 重定向重写分片 (Quantumult X)
+# 作用：将 B站与 YouTube 视频链接 302 跳转到 TypeType
+
+hostname = www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.com, youtu.be
+
+# Bilibili 网页版
+^https?:\/\/(?:www\.|m\.)?bilibili\.com\/video\/(BV[0-9a-zA-Z]+) url 302 https://www.example.com/watch?v=$1
+
+# Bilibili b23.tv 短链
+^https?:\/\/b23\.tv\/(.*) url 302 https://www.example.com/watch?v=https://b23.tv/$1
+
+# YouTube 视频
+^https?:\/\/(?:www\.|m\.)?youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]+) url 302 https://www.example.com/watch?v=$1
+
+# YouTube Shorts
+^https?:\/\/(?:www\.|m\.)?youtube\.com\/shorts\/([a-zA-Z0-9_-]+) url 302 https://www.example.com/watch?v=$1
+
+# youtu.be 短链
+^https?:\/\/youtu\.be\/([a-zA-Z0-9_-]+) url 302 https://www.example.com/watch?v=$1
