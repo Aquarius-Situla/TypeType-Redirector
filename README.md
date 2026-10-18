@@ -1,25 +1,42 @@
 # TypeType-Redirect
 
-A professional, cross-platform URL redirection and traffic-rewriting suite designed for **[TypeType](https://github.com/Aquarius-Situla/TypeType)**. Automatically redirects **Bilibili** (including `b23.tv` short links) and **YouTube** (including `youtu.be` short links, Shorts, and homepages) to your self-hosted TypeType instance via HTTP 302/307 temporary redirects.
+A professional, cross-platform traffic-interception and URL-rewriting suite designed for **[TypeType](https://github.com/Aquarius-Situla/TypeType)**. Automatically redirects **Bilibili** (including `b23.tv` short links) and **YouTube** (including `youtu.be` short links, Shorts, and homepages) to your custom TypeType instance via HTTP 302/307 temporary redirects.
 
-Designed for **algorithmic detox and focus**: eliminates infinite recommendation feeds, clickbait thumbnails, and doomscrolling by steering habitual visits into a clean, distraction-free environment.
+Compatible with **iOS**, **macOS**, **Windows**, **Linux**, and **Android**.
+
+---
+
+## 🎯 Purpose & Core Motivation
+
+Modern video platforms like Bilibili and YouTube are fundamentally engineered around the **attention economy**. Their business models rely on infinite recommendation feeds, algorithmic autoplay, clickbait thumbnails, and compulsive short-form video (Shorts) designed to keep users hooked in prolonged doomscrolling sessions.
+
+**TypeType-Redirect exists to solve three critical challenges:**
+
+### 1. Breaking the Dopamine Loop (Algorithmic Detox)
+Whenever you instinctively or habitually type `bilibili.com` or `youtube.com` into your browser address bar during work or study intervals, TypeType-Redirect immediately diverts the request directly into your clean TypeType instance. **It removes the temptation entirely by making addictive feeds unreachable by default.**
+
+### 2. Maximizing the Utility of Self-Hosted TypeType
+Building a private, distraction-free player like TypeType is only effective if you actually use it. Habitual inertia often pulls users back to the original websites. By establishing an automated redirect layer across all your devices, TypeType becomes the single, non-negotiable gateway for video consumption without requiring conscious willpower.
+
+### 3. Frictionless Cross-App Link Opening
+When friends or colleagues share video links (especially obfuscated Bilibili short links like `b23.tv` or mobile YouTube links), clicking them opens directly in TypeType. There is no need to manually copy links, switch apps, or paste URLs into search bars—interception happens transparently in milliseconds.
 
 ---
 
 ## 🧭 Platform Compatibility Matrix
 
-Different operating systems handle user-installed TLS certificates differently. This repository provides tailored solutions based on platform security architectures:
+Different operating systems enforce distinct security boundaries regarding TLS decryption and proxy routing. This suite provides tailored solutions optimized for each platform:
 
-| Platform | Recommended Solution | Mechanism | Why This Approach? |
+| Platform | Recommended Solution | Mechanism | Technical Rationale |
 | :--- | :--- | :--- | :--- |
-| **iOS / iPadOS** | **Shadowrocket** / **Quantumult X** | Proxy MITM (HTTPS Decryption) | Apple allows user CA installation with full trust in Settings, enabling seamless OS-level interception. |
-| **macOS** | **Shadowrocket** / **Surge** / **Extension** | Proxy MITM or Browser Extension | Native support for system CA keychain; browser extensions also work friction-free. |
-| **Windows / Linux** | **Redirector Extension** / **Userscript** | Browser-level Network Interception | Bypasses proxy conflicts (e.g. Clash, v2rayN) and avoids polluting OS certificate stores. |
-| **Android** | **Redirector Extension** (Kiwi / Firefox) | Browser-level Network Interception | **Android 7.0+ prohibits user CA certificates from decrypting app/browser traffic without Root**. Extension is the optimal zero-root approach. |
+| **iOS / iPadOS** | **Shadowrocket** / **Quantumult X** | Proxy MITM (HTTPS Decryption) | Apple allows user CA installation with full root trust under iOS Settings, enabling seamless OS-level interception. |
+| **macOS** | **Shadowrocket** / **Surge** / **Extension** | Proxy MITM or Browser Extension | Native support for system Keychain root trust; browser extensions also work friction-free. |
+| **Windows / Linux** | **Redirector Extension** / **Userscript** | Browser-level Network Interception | Bypasses proxy port conflicts (e.g., Clash Party, v2rayN) and avoids polluting OS certificate stores. |
+| **Android** | **Redirector Extension** (Kiwi / Firefox) | Browser-level Network Interception | **Android 7.0+ (API 24) strictly blocks user-installed CAs from decrypting app/browser traffic without Root**. Extension is the optimal zero-root approach. |
 
 ---
 
-## 🎯 Redirection Routing Mapping
+## 🗺️ Redirection Routing Mapping
 
 | Source URL | Redirected TypeType Destination | Purpose |
 | :--- | :--- | :--- |
