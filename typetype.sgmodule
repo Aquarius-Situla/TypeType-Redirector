@@ -1,6 +1,6 @@
 #!name=Bilibili & YouTube to TypeType
 #!desc=将 Bilibili(b23.tv) 与 YouTube(youtu.be) 视频链接及主页自动 302 重定向到 TypeType
-#!author=TypeType
+#!author=Situla
 #!system=ios
 #!arguments=domain:www.example.com
 #!arguments-desc=domain: 你的 TypeType 域名（不含协议头，如 www.example.com）
