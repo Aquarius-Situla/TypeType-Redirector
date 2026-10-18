@@ -126,6 +126,9 @@ The official YouTube and Bilibili mobile applications utilize Certificate Pinnin
 ### 4. HTTP 302 vs 301 Semantics
 All rules strictly emit **302 Found (Temporary Redirect)** or **307 Temporary Redirect**. Using `301 Moved Permanently` causes modern browsers to permanently cache the redirection locally, making it impossible to restore original site access or modify endpoints without clearing all browser site data.
 
+### 5. Notice Regarding Niconico (`nicovideo.jp` / `nico.ms`)
+Although TypeType contains foundational codebase hooks for Niconico, its upstream service integration and video stream delivery are **far from reaching a usable, production-ready standard**. As a result, redirection rules for Niconico are intentionally excluded for now and will only be considered once upstream playback stability is achieved.
+
 ---
 
 ## 📄 License
