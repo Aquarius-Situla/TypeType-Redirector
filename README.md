@@ -30,7 +30,7 @@ If you are on PC (e.g., using **Clash Party / Clash Verge / v2rayN**) or prefer 
 A pre-configured, sanitized template is available in this repository: [`redirector.example.json`](./redirector.example.json).
 
 ### How to use:
-1. Install **Redirector** from the [Chrome Web Store](https://chromewebstore.google.com/) or [Edge Add-ons](https://microsoftedge.microsoft.com/addons).
+1. Install **Redirector** from the [Chrome Web Store](https://chromewebstore.google.com/detail/redirector/lioaeidejmlpffbndjhaameocfldlhin) or [Edge Add-ons](https://microsoftedge.microsoft.com/addons/detail/redirector/jhdjcofnjfeljeekjklhgfmfocfgibmm).
 2. Download or copy [`redirector.example.json`](./redirector.example.json) to your computer.
 3. Open the file in any text editor and replace `https://www.example.com` with your actual TypeType domain.
 4. Click the **Redirector** extension icon in your browser toolbar -> Click **Import** -> Select your edited JSON file.
