@@ -1,0 +1,23 @@
+[
+  {
+    "from": "^https?://.*(?:bilibili|youtube)\\.com/?([?#].*)?$",
+    "mode": "regex",
+    "name": "Bilibili & YouTube HomePage",
+    "testUrl": "https://www.bilibili.com/",
+    "to": "https://www.example.com/"
+  },
+  {
+    "from": "^https?://.*(?:youtube\\.com/(?:watch\\?.*v=|shorts/)|youtu\\.be/)([a-zA-Z0-9_-]{11}).*",
+    "mode": "regex",
+    "name": "YouTube Video",
+    "testUrl": "https://m.youtube.com/watch?v=9esvMt03x7w&ra=m",
+    "to": "https://www.example.com/watch?v=$1"
+  },
+  {
+    "from": "^https?://.*bilibili\\.com/video/(BV[0-9a-zA-Z]{10}).*",
+    "mode": "regex",
+    "name": "Bilibili Video",
+    "testUrl": "https://www.bilibili.com/video/BV1xx411c7xx/?spm=123",
+    "to": "https://www.example.com/watch?v=$1"
+  }
+]
