@@ -4,7 +4,7 @@ A set of proxy rewrite and redirection rules designed to automatically redirect 
 
 Helps prevent algorithmic feed distractions and habit-driven endless scrolling by landing directly into your clean TypeType environment.
 
-Compatible with **Shadowrocket** and **Quantumult X**.
+Compatible with **Shadowrocket (iOS)**, **Quantumult X (iOS)**, and **Desktop Browsers (Windows / macOS / Linux via Redirector Extension)**.
 
 ---
 
@@ -23,7 +23,22 @@ Compatible with **Shadowrocket** and **Quantumult X**.
 
 ---
 
-## 🚀 Option 1: Shadowrocket Native Argument Suffix (Recommended)
+## 💻 Option 1: Desktop Browser Extension (Windows / macOS / Linux)
+
+If you are on PC (e.g., using **Clash Party / Clash Verge / v2rayN**) or prefer not to install MITM root certificates, the **[Redirector](https://github.com/rxliuli/redirector)** browser extension is the cleanest, zero-conflict solution.
+
+A pre-configured, sanitized template is available in this repository: [`redirector.example.json`](./redirector.example.json).
+
+### How to use:
+1. Install **Redirector** from the [Chrome Web Store](https://chromewebstore.google.com/) or [Edge Add-ons](https://microsoftedge.microsoft.com/addons).
+2. Download or copy [`redirector.example.json`](./redirector.example.json) to your computer.
+3. Open the file in any text editor and replace `https://www.example.com` with your actual TypeType domain.
+4. Click the **Redirector** extension icon in your browser toolbar -> Click **Import** -> Select your edited JSON file.
+5. All rules (Bilibili/YouTube video and homepage redirects) will be imported and active instantly!
+
+---
+
+## 🚀 Option 2: Shadowrocket Native Argument Suffix (iOS)
 
 Shadowrocket modules adhere to the Surge module specification with `#!arguments` support. When subscribing to the module, **append `#domain=YOUR_DOMAIN` (without `https://`) to the end of the URL**. Shadowrocket will automatically substitute the placeholder with your custom domain upon installation.
 
@@ -51,7 +66,7 @@ https://ghfast.top/https://raw.githubusercontent.com/Aquarius-Situla/TypeType-Re
 
 ---
 
-## ⚡ Option 2: Dynamic Delivery via Cloudflare Worker (Quantumult X & Shadowrocket)
+## ⚡ Option 3: Dynamic Delivery via Cloudflare Worker (Quantumult X & Shadowrocket)
 
 Quantumult X does not natively parse URL fragment parameters (`#hash`). For a fully automated and dynamic domain substitution across all clients, a zero-maintenance [worker.js](./worker.js) script is provided.
 
