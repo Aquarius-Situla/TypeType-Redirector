@@ -9,13 +9,18 @@
 hostname = %APPEND% www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.com, youtu.be
 
 [URL Rewrite]
-# Bilibili 网页端
-^https?:\/\/(?:www\.|m\.)?bilibili\.com\/video\/(BV[0-9a-zA-Z]+) https://{{{domain}}}/watch?v=$1 302
-# Bilibili b23.tv 短链 (将完整短链传给 /watch?v=)
-^https?:\/\/b23\.tv\/(.*) https://{{{domain}}}/watch?v=https://b23.tv/$1 302
-# YouTube 视频
-^https?:\/\/(?:www\.|m\.)?youtube\.com\/watch\?.*v=([a-zA-Z0-9_-]+) https://{{{domain}}}/watch?v=$1 302
-# YouTube Shorts
-^https?:\/\/(?:www\.|m\.)?youtube\.com\/shorts\/([a-zA-Z0-9_-]+) https://{{{domain}}}/watch?v=$1 302
-# youtu.be 短链
-^https?:\/\/youtu\.be\/([a-zA-Z0-9_-]+) https://{{{domain}}}/watch?v=$1 302
+# 1. Bilibili 网页端 (精准匹配 12 位 BV 号，自动剔除尾随斜杠 / 与追踪参数)
+^https?:\/\/(?:www\.|m\.)?bilibili\.com\/video\/(BV[0-9a-zA-Z]{10})(?:[/?#].*)?$ https://{{{domain}}}/watch?v=$1 302
+
+# 2. Bilibili b23.tv 短链 (如果是 BV 号短链直接提取 BV，否则传纯净短链)
+^https?:\/\/b23\.tv\/(BV[0-9a-zA-Z]{10})(?:[/?#].*)?$ https://{{{domain}}}/watch?v=$1 302
+^https?:\/\/b23\.tv\/([a-zA-Z0-9]+)(?:[/?#].*)?$ https://{{{domain}}}/watch?v=https://b23.tv/$1 302
+
+# 3. YouTube 视频 (精准匹配 11 位视频 ID，清洗多余参数)
+^https?:\/\/(?:www\.|m\.)?youtube\.com\/watch\?(?:.*&)?v=([a-zA-Z0-9_-]{11})(?:[&#].*)?$ https://{{{domain}}}/watch?v=$1 302
+
+# 4. YouTube Shorts (清洗尾随斜杠与参数)
+^https?:\/\/(?:www\.|m\.)?youtube\.com\/shorts\/([a-zA-Z0-9_-]{11})(?:[/?#].*)?$ https://{{{domain}}}/watch?v=$1 302
+
+# 5. youtu.be 短链 (清洗尾随斜杠与参数)
+^https?:\/\/youtu\.be\/([a-zA-Z0-9_-]{11})(?:[/?#].*)?$ https://{{{domain}}}/watch?v=$1 302
