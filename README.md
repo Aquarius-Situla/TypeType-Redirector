@@ -1,6 +1,8 @@
-# TypeType-Redirect
+# TypeType-Redirector
 
 A professional, cross-platform traffic-interception and URL-rewriting suite designed for **[TypeType](https://github.com/Aquarius-Situla/TypeType)**. Automatically redirects **Bilibili** (including `b23.tv` short links) and **YouTube** (including `youtu.be` short links, Shorts, and homepages) to your custom TypeType instance via HTTP 302/307 temporary redirects.
+
+> **Disclaimer**: This is an independent, community-driven project created by TypeType contributors. It is not an official product of the upstream TypeType development team.
 
 Compatible with **iOS**, **macOS**, **Windows**, **Linux**, and **Android**.
 
@@ -10,10 +12,10 @@ Compatible with **iOS**, **macOS**, **Windows**, **Linux**, and **Android**.
 
 Modern video platforms like Bilibili and YouTube are fundamentally engineered around the **attention economy**. Their business models rely on infinite recommendation feeds, algorithmic autoplay, clickbait thumbnails, and compulsive short-form video (Shorts) designed to keep users hooked in prolonged doomscrolling sessions.
 
-**TypeType-Redirect exists to solve three critical challenges:**
+**TypeType-Redirector exists to solve three critical challenges:**
 
 ### 1. Breaking the Dopamine Loop (Algorithmic Detox)
-Whenever you instinctively or habitually type `bilibili.com` or `youtube.com` into your browser address bar during work or study intervals, TypeType-Redirect immediately diverts the request directly into your clean TypeType instance. **It removes the temptation entirely by making addictive feeds unreachable by default.**
+Whenever you instinctively or habitually type `bilibili.com` or `youtube.com` into your browser address bar during work or study intervals, TypeType-Redirector immediately diverts the request directly into your clean TypeType instance. **It removes the temptation entirely by making addictive feeds unreachable by default.**
 
 ### 2. Maximizing the Utility of Self-Hosted TypeType
 Building a private, distraction-free player like TypeType is only effective if you actually use it. Habitual inertia often pulls users back to the original websites. By establishing an automated redirect layer across all your devices, TypeType becomes the single, non-negotiable gateway for video consumption without requiring conscious willpower.
@@ -59,12 +61,12 @@ Different operating systems enforce distinct security boundaries regarding TLS d
 Shadowrocket supports the Surge `#!arguments` standard. Simply append `#domain=YOUR_DOMAIN` (without `https://`) to the end of the subscription link:
 
 ```text
-https://raw.githubusercontent.com/Aquarius-Situla/TypeType-Redirect/main/typetype.sgmodule#domain=YOUR_TYPETYPE_DOMAIN
+https://raw.githubusercontent.com/Aquarius-Situla/TypeType-Redirector/main/typetype.sgmodule#domain=YOUR_TYPETYPE_DOMAIN
 ```
 
 *(Fast Mirror for regions with throttled GitHub Raw connections):*
 ```text
-https://ghfast.top/https://raw.githubusercontent.com/Aquarius-Situla/TypeType-Redirect/main/typetype.sgmodule#domain=YOUR_TYPETYPE_DOMAIN
+https://ghfast.top/https://raw.githubusercontent.com/Aquarius-Situla/TypeType-Redirector/main/typetype.sgmodule#domain=YOUR_TYPETYPE_DOMAIN
 ```
 
 **Steps**:
