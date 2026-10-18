@@ -14,7 +14,7 @@ export default {
 
     // 默认展示说明页
     if (pathname === "/" && !url.searchParams.has("domain")) {
-      return new Response(`TypeType-Redirect Worker 运行正常。\n\n使用方式：\n- Shadowrocket: ${url.origin}/sgmodule?domain=https://你的域名\n- Quantumult X: ${url.origin}/snippet?domain=https://你的域名\n`, {
+      return new Response(`TypeType-Redirector Worker 运行正常。\n\n使用方式：\n- Shadowrocket: ${url.origin}/sgmodule?domain=https://你的域名\n- Quantumult X: ${url.origin}/snippet?domain=https://你的域名\n`, {
         headers: { "content-type": "text/plain; charset=utf-8" },
       });
     }
@@ -33,7 +33,7 @@ export default {
       sourceFile = "typetype.snippet";
     }
 
-    const githubRawUrl = `https://raw.githubusercontent.com/Aquarius-Situla/TypeType-Redirect/main/${sourceFile}`;
+    const githubRawUrl = `https://raw.githubusercontent.com/Aquarius-Situla/TypeType-Redirector/main/${sourceFile}`;
     const resp = await fetch(githubRawUrl);
     if (!resp.ok) {
       return new Response("Failed to fetch upstream rule template from GitHub.", { status: 502 });
