@@ -40,13 +40,14 @@ Different operating systems enforce distinct security boundaries regarding TLS d
 
 ## 🗺️ Redirection Routing Mapping
 
-| Source URL | Redirected TypeType Destination | Purpose |
+| Source URL | Redirected TypeType Destination | Mechanism & Purpose |
 | :--- | :--- | :--- |
 | `https://www.bilibili.com/` / `https://m.bilibili.com/` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
 | `https://www.youtube.com/` / `https://m.youtube.com/` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
 | `https://b23.tv` / `https://youtu.be` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
-| `https://www.bilibili.com/video/BV1xx411c7xx` | `https://[YOUR_DOMAIN]/watch?v=BV1xx411c7xx` | Video Player (BV Cleaned) |
-| `https://b23.tv/xxxxxx` | `https://[YOUR_DOMAIN]/watch?v=https://b23.tv/xxxxxx` | Short Link Resolver |
+| `https://www.bilibili.com/video/BV1xx411c7xx` | `https://[YOUR_DOMAIN]/watch?v=BV1xx411c7xx` | Direct Video Player (BV Cleaned) |
+| `https://b23.tv/BV1xx411c7xx` | `https://[YOUR_DOMAIN]/watch?v=BV1xx411c7xx` | BV Short Link Player |
+| `https://b23.tv/BJjdd77` (Random Shortcode) | `https://[YOUR_DOMAIN]/watch?v=BV1pJAMzpE6K` | **Two-Stage Follow-Through**: Bilibili resolves shortcode to real BV, then intercepted to TypeType |
 | `https://www.youtube.com/watch?v=dQw4w9WgXcQ` | `https://[YOUR_DOMAIN]/watch?v=dQw4w9WgXcQ` | Video Player (11-char ID) |
 | `https://www.youtube.com/shorts/xxxxxx` | `https://[YOUR_DOMAIN]/watch?v=xxxxxx` | Shorts Player |
 | `https://youtu.be/dQw4w9WgXcQ` | `https://[YOUR_DOMAIN]/watch?v=dQw4w9WgXcQ` | Short Link Player |
@@ -114,21 +115,28 @@ If you manage multiple devices and prefer dynamic query parameter rewriting (`?d
 
 ## 🔬 Technical Nuances & Limitations
 
-### 1. Android CA Certificate Constraint
+### 1. Two-Stage Resolution for `b23.tv` Shortcodes
+Unlike `youtu.be` (which directly embeds the 11-character video ID in the path), Bilibili's `b23.tv/<shortcode>` links (e.g. `b23.tv/BJjdd77`) are dynamically assigned aliases that require a server-side lookup on Bilibili's infrastructure. If a proxy prematurely intercepts this request, the upstream video ID cannot be determined.
+To solve this gracefully:
+1. The proxy **permits the initial request** to `https://b23.tv/<shortcode>` to reach Bilibili's servers.
+2. Bilibili immediately responds with `302 Found` directing to `https://www.bilibili.com/video/BV...`.
+3. The proxy then intercepts this second hop, sanitizes tracking parameters, and rewrites the destination to your TypeType instance.
+
+### 2. Android CA Certificate Constraint
 Beginning in Android 7.0 (API Level 24), the operating system by default ignores user-installed root certificates for application network traffic unless an application explicitly configures `network_security_config.xml`. On non-rooted Android devices, system-level MITM proxies cannot decrypt HTTPS traffic from standard browsers like Chrome. Hence, using extensions in extension-capable mobile browsers (e.g. Kiwi Browser, Firefox Android) is the only reliable zero-root approach.
 
-### 2. QUIC / HTTP/3 Bypass Prevention
+### 3. QUIC / HTTP/3 Bypass Prevention
 Modern browsers (especially Safari) prioritize **QUIC (HTTP/3 over UDP 443)** for Google and YouTube endpoints. Because proxy MITM engines can only decrypt TCP (TLS) handshakes:
 - You **must reject UDP 443 traffic** in your proxy configuration to force browsers to fall back to TCP (HTTP/2).
 - *Rule example*: `AND,((DEST-PORT,443),(PROTOCOL,UDP)),REJECT`
 
-### 3. SSL Pinning on Native Apps
+### 4. SSL Pinning on Native Apps
 The official YouTube and Bilibili mobile applications utilize Certificate Pinning (SSL Pinning). Intercepting native app API traffic will trigger connection failures. These redirection rules are explicitly engineered for **web browsers (Safari, Chrome, Edge), external link clicks, and in-app web views**.
 
-### 4. HTTP 302 vs 301 Semantics
+### 5. HTTP 302 vs 301 Semantics
 All rules strictly emit **302 Found (Temporary Redirect)** or **307 Temporary Redirect**. Using `301 Moved Permanently` causes modern browsers to permanently cache the redirection locally, making it impossible to restore original site access or modify endpoints without clearing all browser site data.
 
-### 5. Notice Regarding Niconico (`nicovideo.jp` / `nico.ms`)
+### 6. Notice Regarding Niconico (`nicovideo.jp` / `nico.ms`)
 Although TypeType contains foundational codebase hooks for Niconico, its upstream service integration and video stream delivery are **far from reaching a usable, production-ready standard**. As a result, redirection rules for Niconico are intentionally excluded for now and will only be considered once upstream playback stability is achieved.
 
 ---
