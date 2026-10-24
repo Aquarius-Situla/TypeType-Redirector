@@ -1,6 +1,6 @@
 # TypeType-Redirector
 
-A professional, cross-platform traffic-interception and URL-rewriting suite designed for **[TypeType](https://github.com/Aquarius-Situla/TypeType)**. Automatically redirects **Bilibili** (including `b23.tv` short links) and **YouTube** (including `youtu.be` short links, Shorts, and homepages) to your custom TypeType instance via HTTP 302/307 temporary redirects.
+A professional, cross-platform traffic-interception and URL-rewriting suite designed for **[TypeType](https://github.com/TypeType-Video/TypeType-Frontend)**. Automatically redirects **Bilibili** (including `b23.tv` short links) and **YouTube** (including `youtu.be` short links, Shorts, and homepages) to your custom TypeType instance via HTTP 302/307 temporary redirects.
 
 > **Disclaimer**: This is an independent, community-driven project created by TypeType contributors. It is not an official product of the upstream TypeType development team.
 
