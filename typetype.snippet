@@ -1,28 +1,28 @@
 # TypeType 重定向重写分片 (Quantumult X)
-# 作用：将 B站与 YouTube 视频链接及主页 302 跳转到 TypeType
+# 作用：将 B站与 YouTube 视频链接及主页 302 跳转到 TypeType (精准排除 API 与子域名)
 
 hostname = www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.com, youtu.be
 
-# 1. Bilibili 网页版与移动端 (精准捕获 12 位 BV 号)
-^https?://.*bilibili\.com/video/(BV[0-9a-zA-Z]{10}).*$ url 302 https://www.example.com/watch?v=$1
+# 1. Bilibili 网页版与移动端 (精准限定 www/m/裸域名，绝对排除 api.bilibili.com 等子域名)
+^https?://(?:www\.|m\.)?bilibili\.com/video/(BV[0-9a-zA-Z]{10}).*$ url 302 https://www.example.com/watch?v=$1
 
 # 2. Bilibili b23.tv 短链 (仅直接匹配 BV 号短链；随机短码放行由 B站官方完成 302 解析后触发规则 1)
 ^https?://b23\.tv/(BV[0-9a-zA-Z]{10}).*$ url 302 https://www.example.com/watch?v=$1
 
 # 3. YouTube 视频 (v 为第一个参数)
-^https?://.*youtube\.com/watch\?v=([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
+^https?://(?:www\.|m\.)?youtube\.com/watch\?v=([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
 
 # 4. YouTube 视频 (v 在后续参数中)
-^https?://.*youtube\.com/watch\?.*&v=([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
+^https?://(?:www\.|m\.)?youtube\.com/watch\?.*&v=([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
 
 # 5. YouTube Shorts
-^https?://.*youtube\.com/shorts/([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
+^https?://(?:www\.|m\.)?youtube\.com/shorts/([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
 
 # 6. youtu.be 短链
 ^https?://youtu\.be/([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
 
-# 7. 主页重定向 (防沉迷/去信息流干扰，直接进入 TypeType 首页)
-^https?://.*bilibili\.com/?([?#].*)?$ url 302 https://www.example.com/
+# 7. 主页重定向 (防沉迷/去信息流干扰，严格限定 www/m/裸域名，杜绝误伤 api.bilibili.com 等后台服务)
+^https?://(?:www\.|m\.)?bilibili\.com/?([?#].*)?$ url 302 https://www.example.com/
 ^https?://b23\.tv/?([?#].*)?$ url 302 https://www.example.com/
-^https?://.*youtube\.com/?([?#].*)?$ url 302 https://www.example.com/
+^https?://(?:www\.|m\.)?youtube\.com/?([?#].*)?$ url 302 https://www.example.com/
 ^https?://youtu\.be/?([?#].*)?$ url 302 https://www.example.com/
