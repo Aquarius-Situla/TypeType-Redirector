@@ -1,5 +1,5 @@
 #!name=Bilibili & YouTube to TypeType
-#!desc=将 Bilibili(b23.tv) 与 YouTube(youtu.be) 视频链接及主页自动 302 重定向到 TypeType
+#!desc=将 Bilibili(b23.tv) 与 YouTube(youtu.be) 视频链接及主页自动 302 重定向到 TypeType (精准排除 API 与子域名)
 #!author=Situla
 #!system=ios
 #!arguments=domain:www.example.com
@@ -9,26 +9,26 @@
 hostname = %APPEND% www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.com, youtu.be
 
 [URL Rewrite]
-# 1. Bilibili 网页版与移动端 (精准捕获 12 位 BV 号)
-^https?://.*bilibili\.com/video/(BV[0-9a-zA-Z]{10}).*$ https://{{{domain}}}/watch?v=$1 302
+# 1. Bilibili 网页版与移动端 (精准限定 www/m/裸域名，绝对排除 api.bilibili.com 等子域名)
+^https?://(?:www\.|m\.)?bilibili\.com/video/(BV[0-9a-zA-Z]{10}).*$ https://{{{domain}}}/watch?v=$1 302
 
 # 2. Bilibili b23.tv 短链 (仅直接匹配 BV 号短链；随机短码放行由 B站官方完成 302 解析后触发规则 1)
 ^https?://b23\.tv/(BV[0-9a-zA-Z]{10}).*$ https://{{{domain}}}/watch?v=$1 302
 
 # 3. YouTube 视频 (v 为第一个参数)
-^https?://.*youtube\.com/watch\?v=([a-zA-Z0-9_-]{11}).*$ https://{{{domain}}}/watch?v=$1 302
+^https?://(?:www\.|m\.)?youtube\.com/watch\?v=([a-zA-Z0-9_-]{11}).*$ https://{{{domain}}}/watch?v=$1 302
 
 # 4. YouTube 视频 (v 在后续参数中)
-^https?://.*youtube\.com/watch\?.*&v=([a-zA-Z0-9_-]{11}).*$ https://{{{domain}}}/watch?v=$1 302
+^https?://(?:www\.|m\.)?youtube\.com/watch\?.*&v=([a-zA-Z0-9_-]{11}).*$ https://{{{domain}}}/watch?v=$1 302
 
 # 5. YouTube Shorts
-^https?://.*youtube\.com/shorts/([a-zA-Z0-9_-]{11}).*$ https://{{{domain}}}/watch?v=$1 302
+^https?://(?:www\.|m\.)?youtube\.com/shorts/([a-zA-Z0-9_-]{11}).*$ https://{{{domain}}}/watch?v=$1 302
 
 # 6. youtu.be 短链
 ^https?://youtu\.be/([a-zA-Z0-9_-]{11}).*$ https://{{{domain}}}/watch?v=$1 302
 
-# 7. 主页重定向 (防沉迷/去信息流干扰，直接进入 TypeType 首页)
-^https?://.*bilibili\.com/?([?#].*)?$ https://{{{domain}}}/ 302
+# 7. 主页重定向 (防沉迷/去信息流干扰，严格限定 www/m/裸域名，杜绝误伤 api.bilibili.com 等后台服务)
+^https?://(?:www\.|m\.)?bilibili\.com/?([?#].*)?$ https://{{{domain}}}/ 302
 ^https?://b23\.tv/?([?#].*)?$ https://{{{domain}}}/ 302
-^https?://.*youtube\.com/?([?#].*)?$ https://{{{domain}}}/ 302
+^https?://(?:www\.|m\.)?youtube\.com/?([?#].*)?$ https://{{{domain}}}/ 302
 ^https?://youtu\.be/?([?#].*)?$ https://{{{domain}}}/ 302
