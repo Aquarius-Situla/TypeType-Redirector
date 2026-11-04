@@ -1,6 +1,6 @@
 # TypeType-Redirector
 
-A professional, cross-platform traffic-interception and URL-rewriting suite designed for **[TypeType](https://github.com/TypeType-Video/TypeType)**. Automatically redirects **Bilibili** (including `b23.tv` short links) and **YouTube** (including `youtu.be` short links, Shorts, and homepages) to your custom TypeType instance via HTTP 302/307 temporary redirects.
+A professional, cross-platform traffic-interception and URL-rewriting suite designed for **[TypeType](https://github.com/TypeType-Video/TypeType)**. Automatically redirects **Bilibili** (including `b23.tv` short links), **YouTube** (including `youtu.be` short links, Shorts, and homepages), and **NicoNico** (including `nico.ms` short links and homepages) to your custom TypeType instance via HTTP 302/307 temporary redirects.
 
 > **Disclaimer**: This is an independent, community-driven project created by TypeType contributors. It is not an official product of the upstream TypeType development team.
 
@@ -10,18 +10,18 @@ Compatible with **iOS**, **macOS**, **Windows**, **Linux**, and **Android**.
 
 ## 🎯 Purpose & Core Motivation
 
-Modern video platforms like Bilibili and YouTube are fundamentally engineered around the **attention economy**. Their business models rely on infinite recommendation feeds, algorithmic autoplay, clickbait thumbnails, and compulsive short-form video (Shorts) designed to keep users hooked in prolonged doomscrolling sessions.
+Modern video platforms like Bilibili, YouTube, and NicoNico are fundamentally engineered around the **attention economy**. Their business models rely on infinite recommendation feeds, algorithmic autoplay, clickbait thumbnails, and compulsive short-form video (Shorts) designed to keep users hooked in prolonged doomscrolling sessions.
 
 **TypeType-Redirector exists to solve three critical challenges:**
 
 ### 1. Breaking the Dopamine Loop (Algorithmic Detox)
-Whenever you instinctively or habitually type `bilibili.com` or `youtube.com` into your browser address bar during work or study intervals, TypeType-Redirector immediately diverts the request directly into your clean TypeType instance. **It removes the temptation entirely by making addictive feeds unreachable by default.**
+Whenever you instinctively or habitually type `bilibili.com`, `youtube.com`, or `nicovideo.jp` into your browser address bar during work or study intervals, TypeType-Redirector immediately diverts the request directly into your clean TypeType instance. **It removes the temptation entirely by making addictive feeds unreachable by default.**
 
 ### 2. Maximizing the Utility of Self-Hosted TypeType
 Building a private, distraction-free player like TypeType is only effective if you actually use it. Habitual inertia often pulls users back to the original websites. By establishing an automated redirect layer across all your devices, TypeType becomes the single, non-negotiable gateway for video consumption without requiring conscious willpower.
 
 ### 3. Frictionless Cross-App Link Opening
-When friends or colleagues share video links (especially obfuscated Bilibili short links like `b23.tv` or mobile YouTube links), clicking them opens directly in TypeType. There is no need to manually copy links, switch apps, or paste URLs into search bars—interception happens transparently in milliseconds.
+When friends or colleagues share video links (especially obfuscated Bilibili short links like `b23.tv`, mobile YouTube links, or NicoNico short links like `nico.ms`), clicking them opens directly in TypeType. There is no need to manually copy links, switch apps, or paste URLs into search bars—interception happens transparently in milliseconds.
 
 ---
 
@@ -44,13 +44,16 @@ Different operating systems enforce distinct security boundaries regarding TLS d
 | :--- | :--- | :--- |
 | `https://www.bilibili.com/` / `https://m.bilibili.com/` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
 | `https://www.youtube.com/` / `https://m.youtube.com/` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
-| `https://b23.tv` / `https://youtu.be` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
+| `https://www.nicovideo.jp/` / `https://sp.nicovideo.jp/` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
+| `https://b23.tv` / `https://youtu.be` / `https://nico.ms` | `https://[YOUR_DOMAIN]/` | **Anti-distraction Homepage** |
 | `https://www.bilibili.com/video/BV1xx411c7xx` | `https://[YOUR_DOMAIN]/watch?v=BV1xx411c7xx` | Direct Video Player (BV Cleaned) |
 | `https://b23.tv/BV1xx411c7xx` | `https://[YOUR_DOMAIN]/watch?v=BV1xx411c7xx` | BV Short Link Player |
 | `https://b23.tv/BJjdd77` (Random Shortcode) | `https://[YOUR_DOMAIN]/watch?v=BV1pJAMzpE6K` | **Two-Stage Follow-Through**: Bilibili resolves shortcode to real BV, then intercepted to TypeType |
 | `https://www.youtube.com/watch?v=dQw4w9WgXcQ` | `https://[YOUR_DOMAIN]/watch?v=dQw4w9WgXcQ` | Video Player (11-char ID) |
 | `https://www.youtube.com/shorts/xxxxxx` | `https://[YOUR_DOMAIN]/watch?v=xxxxxx` | Shorts Player |
 | `https://youtu.be/dQw4w9WgXcQ` | `https://[YOUR_DOMAIN]/watch?v=dQw4w9WgXcQ` | Short Link Player |
+| `https://www.nicovideo.jp/watch/sm44123456` | `https://[YOUR_DOMAIN]/watch?v=sm44123456` | Video Player (NicoNico ID) |
+| `https://nico.ms/sm44123456` | `https://[YOUR_DOMAIN]/watch?v=sm44123456` | Short Link Player |
 
 ---
 
@@ -116,7 +119,7 @@ If you manage multiple devices and prefer dynamic query parameter rewriting (`?d
 ## 🔬 Technical Nuances & Limitations
 
 ### 1. Two-Stage Resolution for `b23.tv` Shortcodes
-Unlike `youtu.be` (which directly embeds the 11-character video ID in the path), Bilibili's `b23.tv/<shortcode>` links (e.g. `b23.tv/BJjdd77`) are dynamically assigned aliases that require a server-side lookup on Bilibili's infrastructure. If a proxy prematurely intercepts this request, the upstream video ID cannot be determined.
+Unlike `youtu.be` or `nico.ms` (which directly embed the video ID in the path), Bilibili's `b23.tv/<shortcode>` links (e.g. `b23.tv/BJjdd77`) are dynamically assigned aliases that require a server-side lookup on Bilibili's infrastructure. If a proxy prematurely intercepts this request, the upstream video ID cannot be determined.
 To solve this gracefully:
 1. The proxy **permits the initial request** to `https://b23.tv/<shortcode>` to reach Bilibili's servers.
 2. Bilibili immediately responds with `302 Found` directing to `https://www.bilibili.com/video/BV...`.
@@ -135,9 +138,6 @@ The official YouTube and Bilibili mobile applications utilize Certificate Pinnin
 
 ### 5. HTTP 302 vs 301 Semantics
 All rules strictly emit **302 Found (Temporary Redirect)** or **307 Temporary Redirect**. Using `301 Moved Permanently` causes modern browsers to permanently cache the redirection locally, making it impossible to restore original site access or modify endpoints without clearing all browser site data.
-
-### 6. Notice Regarding Niconico (`nicovideo.jp` / `nico.ms`)
-Although TypeType contains foundational codebase hooks for Niconico, its upstream service integration and video stream delivery are **far from reaching a usable, production-ready standard**. As a result, redirection rules for Niconico are intentionally excluded for now and will only be considered once upstream playback stability is achieved.
 
 ---
 

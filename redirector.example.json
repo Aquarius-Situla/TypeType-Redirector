@@ -1,8 +1,8 @@
 [
   {
-    "from": "^https?://(?:(?:www\\.|m\\.)?bilibili|(?:www\\.|m\\.)?youtube)\\.com/?([?#].*)?$",
+    "from": "^https?://(?:(?:www\\.|m\\.)?bilibili\\.com|(?:www\\.|m\\.)?youtube\\.com|(?:www\\.|sp\\.)?nicovideo\\.jp|b23\\.tv|youtu\\.be|nico\\.ms)/?([?#].*)?$",
     "mode": "regex",
-    "name": "Bilibili & YouTube HomePage",
+    "name": "Bilibili & YouTube & NicoNico HomePage",
     "testUrl": "https://www.bilibili.com/",
     "to": "https://www.example.com/"
   },
@@ -18,6 +18,13 @@
     "mode": "regex",
     "name": "Bilibili Video",
     "testUrl": "https://www.bilibili.com/video/BV1xx411c7xx/?spm=123",
+    "to": "https://www.example.com/watch?v=$1"
+  },
+  {
+    "from": "^https?://(?:(?:www\\.|sp\\.)?nicovideo\\.jp/watch/|nico\\.ms/)([a-zA-Z]{2}\\d+).*",
+    "mode": "regex",
+    "name": "NicoNico Video",
+    "testUrl": "https://www.nicovideo.jp/watch/sm44123456?ref=share",
     "to": "https://www.example.com/watch?v=$1"
   }
 ]

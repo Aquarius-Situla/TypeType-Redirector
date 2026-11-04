@@ -1,7 +1,7 @@
 # TypeType 重定向重写分片 (Quantumult X)
-# 作用：将 B站与 YouTube 视频链接及主页 302 跳转到 TypeType (精准排除 API 与子域名)
+# 作用：将 B站、YouTube 与 NicoNico 视频链接及主页 302 跳转到 TypeType (精准排除 API 与子域名)
 
-hostname = www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.com, youtu.be
+hostname = www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.com, youtu.be, www.nicovideo.jp, sp.nicovideo.jp, nico.ms
 
 # 1. Bilibili 网页版与移动端 (精准限定 www/m/裸域名，绝对排除 api.bilibili.com 等子域名)
 ^https?://(?:www\.|m\.)?bilibili\.com/video/(BV[0-9a-zA-Z]{10}).*$ url 302 https://www.example.com/watch?v=$1
@@ -21,8 +21,16 @@ hostname = www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.
 # 6. youtu.be 短链
 ^https?://youtu\.be/([a-zA-Z0-9_-]{11}).*$ url 302 https://www.example.com/watch?v=$1
 
-# 7. 主页重定向 (防沉迷/去信息流干扰，严格限定 www/m/裸域名，杜绝误伤 api.bilibili.com 等后台服务)
+# 7. NicoNico 网页版与移动端
+^https?://(?:www\.|sp\.)?nicovideo\.jp/watch/([a-zA-Z]{2}\d+).*$ url 302 https://www.example.com/watch?v=$1
+
+# 8. NicoNico nico.ms 短链
+^https?://nico\.ms/([a-zA-Z]{2}\d+).*$ url 302 https://www.example.com/watch?v=$1
+
+# 9. 主页重定向 (防沉迷/去信息流干扰，严格限定 www/m/sp/裸域名，杜绝误伤 API 等后台服务)
 ^https?://(?:www\.|m\.)?bilibili\.com/?([?#].*)?$ url 302 https://www.example.com/
 ^https?://b23\.tv/?([?#].*)?$ url 302 https://www.example.com/
 ^https?://(?:www\.|m\.)?youtube\.com/?([?#].*)?$ url 302 https://www.example.com/
 ^https?://youtu\.be/?([?#].*)?$ url 302 https://www.example.com/
+^https?://(?:www\.|sp\.)?nicovideo\.jp/?([?#].*)?$ url 302 https://www.example.com/
+^https?://nico\.ms/?([?#].*)?$ url 302 https://www.example.com/

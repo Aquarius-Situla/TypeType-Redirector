@@ -1,12 +1,12 @@
-#!name=Bilibili & YouTube to TypeType
-#!desc=将 Bilibili(b23.tv) 与 YouTube(youtu.be) 视频链接及主页自动 302 重定向到 TypeType (精准排除 API 与子域名)
+#!name=Bilibili & YouTube & NicoNico to TypeType
+#!desc=将 Bilibili(b23.tv)、YouTube(youtu.be) 与 NicoNico(nico.ms) 视频链接及主页自动 302 重定向到 TypeType (精准排除 API 与子域名)
 #!author=Situla
 #!system=ios
 #!arguments=domain:www.example.com
 #!arguments-desc=domain: 你的 TypeType 域名（不含协议头，如 www.example.com）
 
 [MITM]
-hostname = %APPEND% www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.com, youtu.be
+hostname = %APPEND% www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m.youtube.com, youtu.be, www.nicovideo.jp, sp.nicovideo.jp, nico.ms
 
 [URL Rewrite]
 # 1. Bilibili 网页版与移动端 (精准限定 www/m/裸域名，绝对排除 api.bilibili.com 等子域名)
@@ -27,8 +27,16 @@ hostname = %APPEND% www.bilibili.com, m.bilibili.com, b23.tv, www.youtube.com, m
 # 6. youtu.be 短链
 ^https?://youtu\.be/([a-zA-Z0-9_-]{11}).*$ https://{{{domain}}}/watch?v=$1 302
 
-# 7. 主页重定向 (防沉迷/去信息流干扰，严格限定 www/m/裸域名，杜绝误伤 api.bilibili.com 等后台服务)
+# 7. NicoNico 网页版与移动端
+^https?://(?:www\.|sp\.)?nicovideo\.jp/watch/([a-zA-Z]{2}\d+).*$ https://{{{domain}}}/watch?v=$1 302
+
+# 8. NicoNico nico.ms 短链
+^https?://nico\.ms/([a-zA-Z]{2}\d+).*$ https://{{{domain}}}/watch?v=$1 302
+
+# 9. 主页重定向 (防沉迷/去信息流干扰，严格限定 www/m/sp/裸域名，杜绝误伤 API 等后台服务)
 ^https?://(?:www\.|m\.)?bilibili\.com/?([?#].*)?$ https://{{{domain}}}/ 302
 ^https?://b23\.tv/?([?#].*)?$ https://{{{domain}}}/ 302
 ^https?://(?:www\.|m\.)?youtube\.com/?([?#].*)?$ https://{{{domain}}}/ 302
 ^https?://youtu\.be/?([?#].*)?$ https://{{{domain}}}/ 302
+^https?://(?:www\.|sp\.)?nicovideo\.jp/?([?#].*)?$ https://{{{domain}}}/ 302
+^https?://nico\.ms/?([?#].*)?$ https://{{{domain}}}/ 302
